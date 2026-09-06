@@ -1,0 +1,26 @@
+---
+- name: Configure router-to-router link
+  hosts: routers
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Configure router1 eth1
+      ansible.builtin.command:
+        cmd: docker exec {{ container_name }} ip addr replace 10.0.0.1/30 dev eth1
+      when: inventory_hostname == "172.20.20.2"
+
+    - name: Bring router1 eth1 up
+      ansible.builtin.command:
+        cmd: docker exec {{ container_name }} ip link set eth1 up
+      when: inventory_hostname == "172.20.20.2"
+
+    - name: Configure router2 eth1
+      ansible.builtin.command:
+        cmd: docker exec {{ container_name }} ip addr replace 10.0.0.2/30 dev eth1
+      when: inventory_hostname == "172.20.20.3"
+
+    - name: Bring router2 eth1 up
+      ansible.builtin.command:
+        cmd: docker exec {{ container_name }} ip link set eth1 up
+      when: inventory_hostname == "172.20.20.3"
