@@ -1,0 +1,2 @@
+# host_vars/172.20.20.2.yml
+container_name: clab-ansible-lab-router1
