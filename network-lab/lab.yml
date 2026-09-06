@@ -1,0 +1,16 @@
+name: ansible-lab
+
+topology:
+  nodes:
+    router1:
+      kind: linux
+      image: quay.io/frrouting/frr:10.7.0
+      cmd: /usr/lib/frr/docker-start
+
+    router2:
+      kind: linux
+      image: quay.io/frrouting/frr:10.7.0
+      cmd: /usr/lib/frr/docker-start
+
+  links:
+    - endpoints: ["router1:eth1", "router2:eth1"]
