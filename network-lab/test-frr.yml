@@ -1,0 +1,16 @@
+---
+- name: Test FRR routers
+  hosts: routers
+  gather_facts: false
+
+  tasks:
+    - name: Show FRR version
+      ansible.builtin.command:
+        cmd: docker exec clab-ansible-lab-router1 vtysh -c "show version"
+      delegate_to: localhost
+      register: frr_version
+      changed_when: false
+
+    - name: Display FRR version
+      ansible.builtin.debug:
+        var: frr_version.stdout
