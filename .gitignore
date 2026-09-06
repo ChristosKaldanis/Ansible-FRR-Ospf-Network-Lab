@@ -1,0 +1,48 @@
+# Ansible
+
+*.retry
+.retry/
+.vault_pass
+
+# Python
+
+**pycache**/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+
+# Editor / IDE
+
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+
+.DS_Store
+Thumbs.db
+
+# Logs
+
+*.log
+
+# Temporary files
+
+*.tmp
+*.bak
+*~
+
+# Containerlab generated files
+
+.clab.yml
+clab-*/
+topology-data/
+
+# Local environment / secrets
+
+.env
+.env.*
+!.env.example
