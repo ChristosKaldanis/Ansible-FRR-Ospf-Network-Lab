@@ -1,0 +1,30 @@
+---
+- name: Configure OSPF on FRR routers
+  hosts: routers
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Configure OSPF on router1
+      ansible.builtin.command:
+        cmd: >
+          docker exec {{ container_name }} vtysh
+          -c "configure terminal"
+          -c "router ospf"
+          -c "router-id 1.1.1.1"
+          -c "network 10.0.0.0/30 area 0"
+          -c "end"
+          -c "write memory"
+      when: inventory_hostname == "172.20.20.2"
+
+    - name: Configure OSPF on router2
+      ansible.builtin.command:
+        cmd: >
+          docker exec {{ container_name }} vtysh
+          -c "configure terminal"
+          -c "router ospf"
+          -c "router-id 2.2.2.2"
+          -c "network 10.0.0.0/30 area 0"
+          -c "end"
+          -c "write memory"
+      when: inventory_hostname == "172.20.20.3"
