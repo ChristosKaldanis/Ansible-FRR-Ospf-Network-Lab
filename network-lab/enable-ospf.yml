@@ -1,0 +1,12 @@
+---
+- name: Enable OSPF daemon
+  hosts: routers
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Enable ospfd
+      ansible.builtin.command:
+        cmd: docker exec {{ container_name }} sh -c "sed -i 's/^ospfd=no/ospfd=yes/' /etc/frr/daemons"
+      register: ospfd_config
+      changed_when: true
