@@ -1,0 +1,54 @@
+---
+- name: Bootstrap FRR network lab
+  hosts: routers
+  connection: local
+  gather_facts: false
+
+  tasks:
+    - name: Configure router1 eth1
+      ansible.builtin.command:
+        cmd: docker exec {{ container_name }} ip addr replace 10.0.0.1/30 dev eth1
+      when: inventory_hostname == "172.20.20.2"
+
+    - name: Bring router1 eth1 up
+      ansible.builtin.command:
+        cmd: docker exec {{ container_name }} ip link set eth1 up
+      when: inventory_hostname == "172.20.20.2"
+
+    - name: Configure router2 eth1
+      ansible.builtin.command:
+        cmd: docker exec {{ container_name }} ip addr replace 10.0.0.2/30 dev eth1
+      when: inventory_hostname == "172.20.20.3"
+
+    - name: Bring router2 eth1 up
+      ansible.builtin.command:
+        cmd: docker exec {{ container_name }} ip link set eth1 up
+      when: inventory_hostname == "172.20.20.3"
+
+    - name: Configure OSPF on router1
+      ansible.builtin.command:
+        cmd: >
+          docker exec {{ container_name }} vtysh
+          -c "configure terminal"
+          -c "router ospf"
+          -c "router-id 1.1.1.1"
+          -c "network 10.0.0.0/30 area 0"
+          -c "interface eth1"
+          -c "ip ospf network point-to-point"
+          -c "end"
+          -c "write memory"
+      when: inventory_hostname == "172.20.20.2"
+
+    - name: Configure OSPF on router2
+      ansible.builtin.command:
+        cmd: >
+          docker exec {{ container_name }} vtysh
+          -c "configure terminal"
+          -c "router ospf"
+          -c "router-id 2.2.2.2"
+          -c "network 10.0.0.0/30 area 0"
+          -c "interface eth1"
+          -c "ip ospf network point-to-point"
+          -c "end"
+          -c "write memory"
+      when: inventory_hostname == "172.20.20.3"
