@@ -260,7 +260,7 @@ This highlighted an important operational concept: **container availability does
 
 ## Current Status
 
-**Volume 1 — Complete**
+**Volume 1 — Completed**
 
 * [x] Containerlab topology
 * [x] FRRouting routers
